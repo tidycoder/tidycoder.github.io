@@ -1,7 +1,7 @@
 ---
 layout:     post
-title:      "Java 多线程记录"
-subtitle:   " \"hello, java\""
+title:      "Java 多线程笔记"
+subtitle:   ""
 date:       2015-01-29 12:00:00
 author:     "Tidycoder"
 header-img: "img/post-bg-2015.jpg"
