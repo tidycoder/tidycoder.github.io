@@ -2,7 +2,7 @@
 layout:     post
 title:      "Difference between React and Vue"
 subtitle:   ""
-date:       2017-03-20 12:00:00
+date:       2017-03-05 12:00:00
 header-img: "img/post-bg-2015.jpg"
 tags:
     - javascript React Vue 

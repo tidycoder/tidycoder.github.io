@@ -1,0 +1,96 @@
+---
+layout:     post
+title:      "understand webpack!"
+subtitle:   ""
+date:       2017-03-07 12:00:00
+header-img: "img/post-bg-2015.jpg"
+tags:
+    - webpack
+---
+
+## webpack 解决什么问题
+
+浏览器加载资源有两种方式：
+1. 每个模块对应一个js文件，浏览器分别去请求这些文件。
+2. 所有模块打包到一个js文件中。 浏览器去请求这个文件。
+
+可以看出来， 两种做法都不是很好。 第一种， 发送了太多请求，第二种，假如文件过大，下载时间会很长。
+
+webpack横空出世， 它的使命就是根据模块的依赖进行打包。 这样文件既不会太分散， 也不会集中到一个文件。
+
+webpack另一个好处是利用Loader，各种资源都可以当成模块来处理, 而不仅仅是处理javascript。
+
+
+## loader
+
+对我来说js的loader很容易理解。不容易理解的是其他资源是怎么被当成模块来处理的。 
+
+比如说： 
+
+css文件在代码中依赖，使用style-loader!css-loader!./test.css进行处理， 这个loader是怎么做的呢？
+
+The CSS loader takes a CSS file and returns the CSS with imports and url(...) resolved via webpack's require functionality:
+
+The style loader takes CSS and actually inserts it into the page so that the styles are active on the page.
+
+图片被依赖，是怎么处理的？
+
+
+## plugin
+
+我认为很有用的插件：
+ExtractTextPlugin:
+It moves all the require("style.css")s in entry chunks into a separate single CSS file. So your styles are no longer inlined into the JS bundle, but separate in a CSS bundle file (styles.css). If your total stylesheet volume is big, it will be faster because the CSS bundle is loaded in parallel to the JS bundle.
+
+
+
+## webpack-dev-server
+
+webpack-dev-server可以自动生成一个小型的NodeJs Express服务器从而实现webpack十分实用的功能热替换
+
+## an example
+
+```javascript
+var webpack = require('webpack');
+var ExtractTextPlugin = require('extract-text-webpack-plugin');
+var ReactToHtmlPlugin = require('react-to-html-webpack-plugin');
+
+var path = require('path');
+var ejs = require('ejs');
+var fs = require('fs');
+
+module.exports = {
+  entry: './src/index.js',
+
+  output: {
+    filename: 'index.js',
+    path: path.resolve('./dist'),
+    libraryTarget: 'umd'
+  },
+
+  module: {
+    loaders: [
+      { test: /\.js$/, loader: 'babel-loader', exclude: /node_modules/ },
+      { test: /\.css$/, loader: ExtractTextPlugin.extract('style-loader', 'css-loader?modules&importLoaders=1&localIdentName=[name]__[local]___[hash:base64:5]!postcss-loader') },
+      { test: /\.svg$/, loader: "url-loader?limit=10000&mimetype=image/svg+xml" }
+    ]
+  },
+
+  postcss: [
+    require('autoprefixer-core'),
+    require('postcss-color-rebeccapurple')
+  ],
+
+  resolve: {
+    modulesDirectories: ['node_modules', 'components']
+  },
+
+  plugins: [
+    new ExtractTextPlugin('style.css', { allChunks: true }),
+    new ReactToHtmlPlugin('index.html', 'index.js', {
+      static: true,
+      template: ejs.compile(fs.readFileSync(__dirname + '/src/template.ejs', 'utf-8'))
+    })
+  ]
+};
+```
