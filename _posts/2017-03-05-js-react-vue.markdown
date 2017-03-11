@@ -8,7 +8,7 @@ tags:
     - javascript React Vue 
 ---
 
-## DOM建立
+## Virtual DOM
 
 React中，先是通过JSX或者是通过React.createElement()这种建立内存DOM的方式，建立内存DOM，然后mount到某个根DOM节点上。 也就是说React对用户开放的是操作React Element(内存DOM)，最后由底层自己去建立真正的DOM。
 
@@ -41,4 +41,5 @@ Vue相对还在快速发展中。都可以吧～
 
 
 ## 总结
+React的核心有两点： 一是Virtual DOM， 它让你只知道当前状态该怎么显示，而不用去关心Mutation(操作DOM)。二是组件化开发。
 Vue是一个结合了React和Angular的家伙～
