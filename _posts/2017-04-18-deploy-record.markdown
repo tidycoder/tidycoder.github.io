@@ -25,6 +25,7 @@ aaa.aa.aa.aa   lkl.biz
 yy.yy.yyy.yy lkl.data
 
 
+
 ### java 的安装。 机器：lkl.data和lkl.biz
 wget --no-cookies --no-check-certificate --header "Cookie: gpw_e24=http%3A%2F%2Fwww.oracle.com%2F; oraclelicense=accept-securebackup-cookie" "http://download.oracle.com/otn-pub/java/jdk/8u60-b27/jre-8u60-linux-x64.rpm"
 sudo yum localinstall jre-8u60-linux-x64.rpm
@@ -84,7 +85,9 @@ mv zookeeper-3.3.6 /opt/
 cd  /opt/zookeeper-3.4.6
 mkdir data
 cp conf/zoo_sample.cfg  conf/zoo.cfg
-修改conf/zoo.cfg中的dataDir为/opt/zookeeper-3.3.6/data
+修改conf/zoo.cfg:
+dataDir=/opt/zookeeper-3.3.6/data
+maxClientCnxns=30
 bin/zkServer.sh start
 
 安装并运行metaq
@@ -96,17 +99,31 @@ cp -rf  metamorphosis-server-wrapper ../metaq9123
 bin/metaServer.sh start
 
 
-### nginx php-fpm 机器lkl.biz上
+### nginx php-fpm. 机器lkl.biz上
 
 yum -y install nginx
 /etc/init.d/nginx start
 
-yum install php-fpm php-mysql
+yum install php php-fpm php-devel php-bcmatch php-gd php-mbstring php-mcrypt php-mysql
 service php-fpm start
 
-主要三部分： 1. upload 2. pic 3. community(bbs)
-部署流程繁琐，略！
+使用到nginx和php的主要三部分： 1. upload 2. pic 3. community(bbs)。
+创建用户www www.修改php和nginx的用户为www www.
+拷贝lkl-bbs拷贝到/home/wwwroot下。并配置nginx。 
 
+注意事项：
+php.ini中增加：
+upload_tmp_dir = /tmp
+upload_max_filesize = 20M
+nginx.conf中增加:
+client_body_temp_path /tmp/nginx-client-body;
+proxy_temp_path /tmp/nginx-proxy;
+fastcgi_temp_path /tmp/nginx-fastcgi;
+uwsgi_temp_path /tmp/nginx-uwsgi;
+scgi_temp_path /tmp/nginx-scgi;
+
+
+配置细节略。配置可参考lkl.biz上的已有配置。
 
 ### tomcat 机器lkl.biz上
 
