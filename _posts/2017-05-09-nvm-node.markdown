@@ -1,0 +1,22 @@
+2017-05-09-nvm-node.markdown
+
+layout:     post
+title:      "deploy process!"
+subtitle:   ""
+date:       2017-03-07 12:00:00
+header-img: "img/post-bg-2015.jpg"
+tags:
+    - 运维
+---
+
+###使用nvm管理node版本号
+先下载并安装nvm, 需要打开心的shell，才能使用nvm
+
+nvm install v7.7.3
+
+nvm use v7.7.3
+
+然后就可以happy的使用v7.7.3了。
+
+另把.npmrc放到当前目录， 可以直接起作用。 比如说配置淘宝源。
+
